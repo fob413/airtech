@@ -34,12 +34,19 @@ Airtech is a flight booking system that allows users of the platform to book fli
 ```
 - FLASK_ENV
 - DATABASE_URL
+- TEST_DATABASE_URL
 - JWT_SECRET_KEY
 ```
 * Export the environment variables in the .env
 ```export $(cat .env)```
+* Setup your database;
+  - ```python manage.py db init```
+  - ```python manage.py db migrate```
+  - ```python manage.py db upgrade```
 * Run the app
 ```python app.py```
+* To run the test
+```tox```
 
 # Contributing
 Feel free to dive in. Open an issue to request for a bug fix or additional feature or submit PRs. To contribute:
