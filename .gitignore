@@ -1,1 +1,4 @@
 .env
+.tox/
+.DS_Store
+__pycache_/
