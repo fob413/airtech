@@ -1,3 +1,6 @@
+[![Coverage Status](https://coveralls.io/repos/github/fob413/airtech/badge.svg?branch=development)](https://coveralls.io/github/fob413/airtech?branch=ch-continuous-integration-164228259)
+[![CircleCI](https://circleci.com/gh/fob413/airtech.svg?style=svg)](https://circleci.com/gh/fob413/airtech)
+
 <p align="center">
   <img src="https://github.com/fob413/airtech/blob/master/api/utils/airtech.png?raw=true">
 </p>
