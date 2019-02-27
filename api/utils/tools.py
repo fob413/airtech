@@ -31,7 +31,11 @@ def generate_hash(password):
 
 
 def check_hash(hash_password, password):
-    return bcrypt.check_password_hash(hash_password, password)
+    try:
+        is_authenticated = bcrypt.check_password_hash(hash_password, password)
+        return is_authenticated
+    except:
+        return False
 
 
 def generate_token(user_id):
@@ -44,5 +48,18 @@ def generate_token(user_id):
     return jwt.encode(
         payload,
         os.getenv('JWT_SECRET_KEY'),
+        'HS256'
+        ).decode("utf-8")
+
+def generate_admin_token(user_id):
+    payload = {
+        'exp': datetime.datetime.utcnow() + datetime.timedelta(days=1),
+        'iat': datetime.datetime.utcnow(),
+        'user_id': user_id
+    }
+
+    return jwt.encode(
+        payload,
+        os.getenv('ADMIN_JWT_SECRET_KEY'),
         'HS256'
         ).decode("utf-8")
