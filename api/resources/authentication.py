@@ -7,7 +7,9 @@ from api.utils.tools import (
     generate_hash,
     error_response,
     generate_token,
-    success_response
+    success_response,
+    check_hash,
+    generate_admin_token
 )
 
 
@@ -43,3 +45,35 @@ class Signup(Resource):
             return success_response({'token': token}, 201)
         else:
             return error_response('Server error while signing up user, please try again later', 500)
+
+
+class Signin(Resource):
+    """
+    Signin a user
+    """
+
+    @Validator.validate([
+        'email|required:str',
+        'password|required:str'
+    ])
+    def post(self):
+        payload = request.get_json()
+
+        user = User.query.filter_by(email=payload['email']).first()
+
+        if not user:
+            return error_response('Incorrect Email or password', 400)
+        else:
+            is_authenticated = check_hash(user.password, payload['password'])
+
+            if is_authenticated:
+                if user.is_admin:
+                    token = generate_admin_token(user.id)
+
+                    return success_response({'token': token}, 200)
+                else:
+                    token = generate_token(user.id)
+
+                    return success_response({'token': token}, 200)
+            else:
+                return error_response('Incorrect Email or password', 400)
