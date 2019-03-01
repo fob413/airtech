@@ -2,8 +2,8 @@ from flask import request, make_response, jsonify
 from functools import wraps
 from validate_email import validate_email
 
-from api.models.user import User
-from api.utils.tools import error_response
+from app.models.user import User
+from app.utils.tools import error_response
 
 
 class Validator:

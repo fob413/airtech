@@ -2,9 +2,10 @@ from flask import Flask
 from flask_restful import Resource, Api
 
 
-from api.config import app_config
-from api.utils.db import db
-from api.resources.authentication import Signup, Signin
+from app.config import app_config
+from app.utils.db import db
+from app.resources.authentication import Signup, Signin
+# import pdb;pdb.set_trace()
 
 
 def create_app(env_name):

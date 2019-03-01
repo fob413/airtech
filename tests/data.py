@@ -1,5 +1,5 @@
-from api.models.user import User
-from api.utils.tools import generate_hash
+from app.models.user import User
+from app.utils.tools import generate_hash
 
 
 user_data = [

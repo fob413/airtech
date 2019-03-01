@@ -1,5 +1,5 @@
-from api.models.base_model import BaseModel
-from api.utils.db import db
+from app.models.base_model import BaseModel
+from app.utils.db import db
 
 
 class User(BaseModel):
