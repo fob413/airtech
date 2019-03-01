@@ -1,9 +1,9 @@
 from flask_restful import Resource
 from flask import request
 
-from api.models.user import User
-from api.utils.validator import Validator
-from api.utils.tools import (
+from app.models.user import User
+from app.utils.validator import Validator
+from app.utils.tools import (
     generate_hash,
     error_response,
     generate_token,

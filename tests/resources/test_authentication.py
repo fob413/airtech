@@ -2,9 +2,9 @@ import unittest
 import os
 import json
 
-from api.app import create_app, db
+from app.app import create_app, db
 from tests.data import user_data, admin_user
-from api.config import app_config
+from app.config import app_config
 
 
 class AuthenticationTestCase(unittest.TestCase):

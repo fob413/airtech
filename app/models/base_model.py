@@ -1,4 +1,4 @@
-from api.utils.db import db
+from app.utils.db import db
 from datetime import datetime
 
 
