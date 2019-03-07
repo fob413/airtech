@@ -48,7 +48,7 @@ def generate_token(user_id):
     return jwt.encode(
         payload,
         os.getenv('JWT_SECRET_KEY'),
-        'HS256'
+        algorithm='HS256'
         ).decode("utf-8")
 
 def generate_admin_token(user_id):

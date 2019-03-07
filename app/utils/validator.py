@@ -1,4 +1,7 @@
-from flask import request, make_response, jsonify
+import jwt
+import os
+
+from flask import request, make_response, jsonify, g
 from functools import wraps
 from validate_email import validate_email
 
@@ -76,5 +79,46 @@ class Validator:
                 return f(*args, **kwargs)
             return decorated
         return user_exist
+
+    @staticmethod
+    def validate_token():
+        """
+        Validate user token
+        """
+        def token_validate(f):
+
+            @wraps(f)
+            def decorated(*args, **kwargs):
+
+                # get authorization token
+                authorization_token = request.headers.get('auth_token')
+                if not authorization_token:
+                    return error_response('User is not authenticated', 401)
+
+                # decode token
+                try:
+                    payload = jwt.decode(
+                        authorization_token,
+                        os.getenv('JWT_SECRET_KEY'),
+                        algorithm='HS256'
+                    )
+                except ValueError:
+                    return error_response('User is not authenticated', 401)
+                except jwt.ExpiredSignatureError:
+                    return error_response('Authorization failed. Expired token.', 401)
+                except jwt.DecodeError as error:
+                    if str(error) == 'Signature verification failed':
+                        return error_response('An error occured while decoding', 500)
+                    else:
+                        return error_response('Token provided is invalid', 401)
+
+                g.user_id = payload['user_id']
+                
+
+
+                return f(*args, **kwargs)
+            return decorated
+        return token_validate
+
                 
 

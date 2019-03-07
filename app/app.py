@@ -5,7 +5,7 @@ from flask_restful import Resource, Api
 from app.config import app_config
 from app.utils.db import db
 from app.resources.authentication import Signup, Signin
-# import pdb;pdb.set_trace()
+from app.resources.profile import Profile
 
 
 def create_app(env_name):
@@ -14,8 +14,8 @@ def create_app(env_name):
     """
 
     app = Flask(__name__)
-    app.config.from_object(app_config[env_name])
 
+    app.config.from_object(app_config[env_name])
     db.init_app(app)
 
     api = Api(app)
@@ -34,5 +34,8 @@ def create_app(env_name):
 
     # user sign in endpoint
     api.add_resource(Signin, '/api/v1/auth/signin')
+
+    # user upload profile picture
+    api.add_resource(Profile, '/api/v1/profile-picture')
 
     return app
