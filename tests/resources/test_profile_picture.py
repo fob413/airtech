@@ -13,7 +13,8 @@ token = ""
 class ProfilePictureTestCase(unittest.TestCase):
     """This class represents the profile picture tests"""
 
-    def setUp(self):
+    @classmethod
+    def setUpClass(self):
         """Define test variables and initialize app."""
         self.app = create_app("testing")
         self.app_context = self.app.app_context()
@@ -21,7 +22,8 @@ class ProfilePictureTestCase(unittest.TestCase):
         db.create_all()
         self.client = self.app.test_client
 
-    def tearDown(self):
+    @classmethod
+    def tearDownClass(self):
         db.session.remove()
         db.drop_all()
         self.app_context.pop()
@@ -78,7 +80,7 @@ class ProfilePictureTestCase(unittest.TestCase):
         # signup a user
         res = self.client().post(
             '/api/v1/auth/signup',
-            data=json.dumps(user_data[0]),
+            data=json.dumps(user_data[6]),
             headers={
                 'content-type': 'application/json'
             }

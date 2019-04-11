@@ -6,6 +6,7 @@ from app.config import app_config
 from app.utils.db import db
 from app.resources.authentication import Signup, Signin
 from app.resources.profile import Profile
+from app.resources.airline import Airlines
 
 
 def create_app(env_name):
@@ -37,5 +38,8 @@ def create_app(env_name):
 
     # user upload profile picture
     api.add_resource(Profile, '/api/v1/profile-picture')
+
+    # admin add airline
+    api.add_resource(Airlines, '/api/v1/airline')
 
     return app

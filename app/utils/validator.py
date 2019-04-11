@@ -6,6 +6,7 @@ from functools import wraps
 from validate_email import validate_email
 
 from app.models.user import User
+from app.models.airline import Airline
 from app.utils.tools import error_response
 
 
@@ -81,6 +82,31 @@ class Validator:
         return user_exist
 
     @staticmethod
+    def validate_airline():
+        """
+        Validate no duplicate airline exist
+        """
+        def airline_exist(f):
+
+            @wraps(f)
+            def decorated(*args, **kwargs):
+                payload = request.get_json()
+
+                airline_name = Airline.query.filter_by(name=payload['name']).first()
+
+                if airline_name:
+                    return error_response('An airline already exist with the name', 400)
+                
+                airline_name_abb = Airline.query.filter_by(name_abb=payload['nameAbb']).first()
+
+                if airline_name_abb:
+                    return error_response('An airline already exist with the name abbreviation', 400)
+
+                return f(*args, **kwargs)
+            return decorated
+        return airline_exist
+
+    @staticmethod
     def validate_token():
         """
         Validate user token
@@ -109,6 +135,46 @@ class Validator:
                 except jwt.DecodeError as error:
                     if str(error) == 'Signature verification failed':
                         return error_response('An error occured while decoding', 500)
+                    else:
+                        return error_response('Token provided is invalid', 401)
+
+                g.user_id = payload['user_id']
+                
+
+
+                return f(*args, **kwargs)
+            return decorated
+        return token_validate
+
+    @staticmethod
+    def validate_admin_token():
+        """
+        Validate admin token
+        """
+        def token_validate(f):
+
+            @wraps(f)
+            def decorated(*args, **kwargs):
+
+                # get authorization token
+                authorization_token = request.headers.get('auth_token')
+                if not authorization_token:
+                    return error_response('User is not authenticated', 401)
+
+                # decode token
+                try:
+                    payload = jwt.decode(
+                        authorization_token,
+                        os.getenv('ADMIN_JWT_SECRET_KEY'),
+                        algorithm='HS256'
+                    )
+                except ValueError:
+                    return error_response('User is not authenticated', 401)
+                except jwt.ExpiredSignatureError:
+                    return error_response('Authorization failed. Expired token.', 401)
+                except jwt.DecodeError as error:
+                    if str(error) == 'Signature verification failed':
+                        return error_response('Token provided is invalid', 401)
                     else:
                         return error_response('Token provided is invalid', 401)
 

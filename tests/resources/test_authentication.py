@@ -3,14 +3,15 @@ import os
 import json
 
 from app.app import create_app, db
-from tests.data import user_data, admin_user
+from tests.data import user_data, admin_user2
 from app.config import app_config
 
 
 class AuthenticationTestCase(unittest.TestCase):
     """This class represents the authentication test case"""
 
-    def setUp(self):
+    @classmethod
+    def setUpClass(self):
         """Define test variables and initialize app."""
         self.app = create_app("testing")
         self.app_context = self.app.app_context()
@@ -18,7 +19,12 @@ class AuthenticationTestCase(unittest.TestCase):
         db.create_all()
         self.client = self.app.test_client
 
-    def tearDown(self):
+        db.session.add(admin_user2)
+        db.session.commit()
+
+    @classmethod
+    def tearDownClass(self):
+        print('===>> I m done oooo!!!')
         db.session.remove()
         db.drop_all()
         self.app_context.pop()
@@ -137,15 +143,10 @@ class AuthenticationTestCase(unittest.TestCase):
 
     def test_signin_admin(self):
         """Test api can signin an admin"""
-
-        db.session.add(admin_user)
-        db.session.commit()
-
-        res = self.client().post('/api/v1/auth/signin', data=json.dumps(user_data[7]), content_type="application/json")
-        self.assertEqual(res.status_code, 200)
+        res = self.client().post('/api/v1/auth/signin', data=json.dumps(user_data[15]), content_type="application/json")
         response = json.loads(res.data)
+        self.assertEqual(res.status_code, 200)
         self.assertTrue(response['data'][0]['token'])
-
             
 
     def test_default_route(self):
