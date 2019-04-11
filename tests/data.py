@@ -90,6 +90,10 @@ user_data = [
         "tel": "12345678900",
         "email": "testuser",
         "password": "password"
+    },
+    {
+        "email": "admintestuser2@email.com",
+        "password": "asdf;lkj"
     }
 ]
 
@@ -101,3 +105,46 @@ admin_user = User(
     password=generate_hash('asdf;lkj'),
     is_admin=True
 )
+
+admin_user2 = User(
+    firstname= 'admintestuser2',
+    lastname='admintestuser2',
+    tel='12345678900',
+    email='admintestuser2@email.com',
+    password=generate_hash('asdf;lkj'),
+    is_admin=True
+)
+
+admin_user3 = User(
+    firstname= 'admintestuser3',
+    lastname='admintestuser3',
+    tel='12345678900',
+    email='admintestuser3@email.com',
+    password=generate_hash('asdf;lkj'),
+    is_admin=True
+)
+
+airline = [
+    {
+        "name": "Delta Airline",
+        "nameAbb": "DL"
+    },
+    {
+        "nameAbb": "AP"
+    },
+    {
+        "name": "Delta Airline"
+    },
+    {
+        "name": "Arik",
+        "nameAbb": "AK"
+    },
+    {
+        "name": "British",
+        "nameAbb": "AK"
+    },
+    {
+        "name": "Arik",
+        "nameAbb": "BH"
+    }
+]
