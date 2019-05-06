@@ -5,6 +5,8 @@ import jwt
 from flask import jsonify
 from flask_bcrypt import Bcrypt
 
+from app.models.airline import Airline
+
 
 bcrypt = Bcrypt()
 
@@ -51,6 +53,7 @@ def generate_token(user_id):
         algorithm='HS256'
         ).decode("utf-8")
 
+
 def generate_admin_token(user_id):
     payload = {
         'exp': datetime.datetime.utcnow() + datetime.timedelta(days=1),
@@ -63,3 +66,19 @@ def generate_admin_token(user_id):
         os.getenv('ADMIN_JWT_SECRET_KEY'),
         'HS256'
         ).decode("utf-8")
+
+
+def get_airline(airline_id):
+    airline = Airline.query.filter_by(id=airline_id).first()
+
+    return airline
+
+
+def duplicate_exists(item, possible_duplicates):
+    if len(possible_duplicates) > 0:
+        if possible_duplicates[0] != item:
+            return True
+        else:
+            return False
+    else:
+        return False

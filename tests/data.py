@@ -1,4 +1,5 @@
 from app.models.user import User
+from app.models.airline import Airline
 from app.utils.tools import generate_hash
 
 
@@ -106,6 +107,16 @@ admin_user = User(
     is_admin=True
 )
 
+new_airline1 = Airline(
+    name= "Delta Airways",
+    name_abb="DA"
+)
+
+new_airline2 = Airline(
+    name= "Air Peace",
+    name_abb="AP"
+)
+
 admin_user2 = User(
     firstname= 'admintestuser2',
     lastname='admintestuser2',
@@ -146,5 +157,17 @@ airline = [
     {
         "name": "Arik",
         "nameAbb": "BH"
+    },
+    {
+        "name": "Delta AirlineS",
+        "nameAbb": "DAS"
+    },
+    {
+        "name": "Air Peace",
+        "nameAbb": "DA"
+    },
+    {
+        "name": "Delta Airways",
+        "nameAbb": "AP"
     }
 ]
