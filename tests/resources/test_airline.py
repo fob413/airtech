@@ -4,7 +4,7 @@ import json
 
 from app.app import create_app, db
 from app.config import app_config
-from tests.data import user_data, admin_user, airline
+from tests.data import user_data, admin_user, airline, new_airline1, new_airline2
 
 
 class AirlineTestCase(unittest.TestCase):
@@ -18,8 +18,11 @@ class AirlineTestCase(unittest.TestCase):
         self.app_context.push()
         db.create_all()
         self.client = self.app.test_client
+        self.existing_airline_id = ''
 
         db.session.add(admin_user)
+        db.session.add(new_airline1)
+        db.session.add(new_airline2)
         db.session.commit()
 
     @classmethod
@@ -144,6 +147,154 @@ class AirlineTestCase(unittest.TestCase):
         self.assertEqual(res3.status_code, 400)
         response1 = json.loads(res3.data)
         self.assertTrue(response1['error'])
+
+    def test_admin_can_get_single_airline(self):
+        """Test API can get single airline"""
+        # create new airline
+        res1 = self.client().post('/api/v1/auth/signin', data=json.dumps(user_data[7]), content_type="application/json")
+        res1 = json.loads(res1.data)
+        token = res1['data'][0]['token']
+
+        res = self.client().get(
+            '/api/v1/airline/1',
+            headers={
+                'content-type': 'application/json',
+                'auth_token': token
+            }
+        )
+        self.assertTrue(res.status_code, 200)
+        response = json.loads(res.data)
+        self.assertTrue(response['data'][0]['name'])
+        self.assertTrue(response['data'][0]['nameAbb'])
+
+    def test_get_airline_does_not_exist(self):
+        """Test API cannot get airline that does not exist"""
+        # create new airline
+        res1 = self.client().post('/api/v1/auth/signin', data=json.dumps(user_data[7]), content_type="application/json")
+        res1 = json.loads(res1.data)
+        token = res1['data'][0]['token']
+
+        res = self.client().get(
+            '/api/v1/airline/100',
+            headers={
+                'content-type': 'application/json',
+                'auth_token': token
+            }
+        )
+        self.assertTrue(res.status_code, 404)
+        response = json.loads(res.data)
+        self.assertTrue(response['error'])
+
+    def test_admin_successful_update_airline(self):
+        """Test API can successfully update an airline"""
+        res1 = self.client().post('/api/v1/auth/signin', data=json.dumps(user_data[7]), content_type="application/json")
+        res1 = json.loads(res1.data)
+        token = res1['data'][0]['token']
+
+        res = self.client().put(
+            '/api/v1/airline/1',
+            data=json.dumps(airline[6]),
+            headers={
+                'content-type': 'application/json',
+                'auth_token': token
+            }
+        )
+        self.assertTrue(res.status_code, 200)
+        response = json.loads(res.data)
+        self.assertTrue(response['data'][0]['name'])
+        self.assertTrue(response['data'][0]['name'], airline[6]['name'])
+        self.assertTrue(response['data'][0]['nameAbb'])
+        self.assertTrue(response['data'][0]['nameAbb'], airline[6]['nameAbb'])
+
+    def test_update_nonexistent_airline(self):
+        """Test API cannot update an airline that does not exist"""
+        res1 = self.client().post('/api/v1/auth/signin', data=json.dumps(user_data[7]), content_type="application/json")
+        res1 = json.loads(res1.data)
+        token = res1['data'][0]['token']
+
+        res = self.client().put(
+            '/api/v1/airline/100',
+            data=json.dumps(airline[6]),
+            headers={
+                'content-type': 'application/json',
+                'auth_token': token
+            }
+        )
+        self.assertTrue(res.status_code, 404)
+        response = json.loads(res.data)
+        self.assertTrue(response['error'])
+
+    def test_airline_update_without_name(self):
+        """Test API airline without name"""
+        res1 = self.client().post('/api/v1/auth/signin', data=json.dumps(user_data[7]), content_type="application/json")
+        res1 = json.loads(res1.data)
+        token = res1['data'][0]['token']
+
+        res = self.client().put(
+            '/api/v1/airline/1',
+            data=json.dumps(airline[1]),
+            headers={
+                'content-type': 'application/json',
+                'auth_token': token
+            }
+        )
+        self.assertTrue(res.status_code, 400)
+        response = json.loads(res.data)
+        self.assertTrue(response['error'])
+
+    def test_airline_update_without_nameAbb(self):
+        """Test API airline without nameAbb"""
+        res1 = self.client().post('/api/v1/auth/signin', data=json.dumps(user_data[7]), content_type="application/json")
+        res1 = json.loads(res1.data)
+        token = res1['data'][0]['token']
+
+        res = self.client().put(
+            '/api/v1/airline/1',
+            data=json.dumps(airline[2]),
+            headers={
+                'content-type': 'application/json',
+                'auth_token': token
+            }
+        )
+        self.assertTrue(res.status_code, 400)
+        response = json.loads(res.data)
+        self.assertTrue(response['error'])
+
+    def test_airline_update_with_duplicate_name(self):
+        """Test API airline with duplicate name"""
+        res1 = self.client().post('/api/v1/auth/signin', data=json.dumps(user_data[7]), content_type="application/json")
+        res1 = json.loads(res1.data)
+        token = res1['data'][0]['token']
+
+        res = self.client().put(
+            '/api/v1/airline/1',
+            data=json.dumps(airline[7]),
+            headers={
+                'content-type': 'application/json',
+                'auth_token': token
+            }
+        )
+        self.assertTrue(res.status_code, 400)
+        response = json.loads(res.data)
+        self.assertTrue(response['error'])
+
+    def test_airline_update_with_duplicate_nameAbb(self):
+        """Test API airline with duplicate nameAbb"""
+        res1 = self.client().post('/api/v1/auth/signin', data=json.dumps(user_data[7]), content_type="application/json")
+        res1 = json.loads(res1.data)
+        token = res1['data'][0]['token']
+
+        res = self.client().put(
+            '/api/v1/airline/1',
+            data=json.dumps(airline[8]),
+            headers={
+                'content-type': 'application/json',
+                'auth_token': token
+            }
+        )
+        self.assertTrue(res.status_code, 400)
+        response = json.loads(res.data)
+        self.assertTrue(response['error'])
 
 
 if __name__ == "__main__":

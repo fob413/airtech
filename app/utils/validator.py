@@ -174,9 +174,9 @@ class Validator:
                     return error_response('Authorization failed. Expired token.', 401)
                 except jwt.DecodeError as error:
                     if str(error) == 'Signature verification failed':
-                        return error_response('Token provided is invalid', 401)
+                        return error_response('User is not authenticated', 401)
                     else:
-                        return error_response('Token provided is invalid', 401)
+                        return error_response('User is not authenticated', 401)
 
                 g.user_id = payload['user_id']
                 
