@@ -1,4 +1,5 @@
 .env
 .tox/
-.DS_Store
+*.DS_Store
 __pycache_/
+*.pyc 

@@ -296,6 +296,27 @@ class AirlineTestCase(unittest.TestCase):
         response = json.loads(res.data)
         self.assertTrue(response['error'])
 
+    def test_get_all_airline(self):
+        """Test API admin can get all airlines"""
+        res1 = self.client().post('/api/v1/auth/signin', data=json.dumps(user_data[7]), content_type="application/json")
+        res1 = json.loads(res1.data)
+        token = res1['data'][0]['token']
+
+        res = self.client().get(
+            '/api/v1/airline',
+            headers={
+                'content-type': 'application/json',
+                'auth_token': token
+            }
+        )
+        self.assertTrue(res.status_code, 200)
+        response = json.loads(res.data)
+        self.assertTrue(response['data'][0]['count'])
+        self.assertTrue(response['data'][0]['currentPage'])
+        self.assertTrue(response['data'][0]['data'])
+        self.assertTrue(response['data'][0]['pageSize'])
+        self.assertTrue(response['data'][0]['pages'])
+
 
 if __name__ == "__main__":
     unittest.main()
