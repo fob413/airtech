@@ -82,3 +82,11 @@ def duplicate_exists(item, possible_duplicates):
             return False
     else:
         return False
+
+def serialize_list(item_lists):
+    result = []
+
+    for item in item_lists:
+        result.append(item.serialize())
+
+    return result

@@ -8,7 +8,8 @@ from app.utils.tools import (
     success_response,
     error_response,
     get_airline,
-    duplicate_exists
+    duplicate_exists,
+    serialize_list
 )
 
 
@@ -31,6 +32,37 @@ class Airlines(Resource):
         new_airline = new_airline.serialize()
 
         return success_response(new_airline, 201)
+
+    @Validator.validate_admin_token()
+    def get(self):
+        args = request.args
+        
+        if args.get('page'):
+            try:
+                page = int(args.get('page'))
+            except:
+                page = 0
+        else:
+            page = 0
+
+        if args.get('limit'):
+            try:
+                per_page = int(args.get('limit'))
+            except:
+                per_page = 5
+        else:
+            per_page = 5
+
+        airlines = Airline.query.paginate(page, per_page, False)
+
+        response = {
+            'currentPage': airlines.page,
+            'pages': airlines.pages,
+            'pageSize': airlines.per_page,
+            'count': airlines.total,
+            'data': serialize_list(airlines.items)
+        }
+        return success_response(response, 200)
 
 
 class Single_Airline(Resource):
