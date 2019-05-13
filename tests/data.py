@@ -301,5 +301,16 @@ flight = [
         "price": 600,
         "status": "active",
         "departureLocation": "Lagos",
+    },
+    {
+        "airlineID": "1",
+        "departureTime": "22:05",
+        "departureDate": "2019-09-09",
+        "noOfSeats": 10,
+        "arrivalTime": "05:30",
+        "price": 600,
+        "status": "active",
+        "departureLocation": "London",
+        "arrivalLocation": "Lagos"
     }
 ]

@@ -76,3 +76,51 @@ class FlightResource(Resource):
         response['departureTime'] = response['departureTime'].strftime('%H:%M')
         response['arrivalTime'] = response['arrivalTime'].strftime('%H:%M')
         return success_response(response, 201)
+
+
+class Single_FlightResource(Resource):
+
+    @Validator.validate_admin_token()
+    @Validator.validate([
+        'airlineID|required:str',
+        'departureTime|required:time',
+        'departureDate|required:date',
+        'noOfSeats|required:int',
+        'arrivalTime|required:time',
+        'price|required:float',
+        'status|required:str',
+        'departureLocation|required:str',
+        'arrivalLocation|required:str'
+    ])
+    @Validator.validate_airline_exists()
+    def put(self, flight_id):
+        flight = Flight.query.filter_by(id=flight_id).first()
+
+        if flight:
+            payload = request.get_json()
+
+            (airlineID, departureTime, departureDate, noOfSeats, arrivalTime,
+            price, status, departureLocation, arrivalLocation ) = (payload['airlineID'],
+            payload['departureTime'], payload['departureDate'], payload['noOfSeats'], payload['arrivalTime'],
+            payload['price'], payload['status'], payload['departureLocation'], payload['arrivalLocation'])
+
+            flight.airline = int(airlineID)
+            flight.departure_date = departureDate
+            flight.departure_time = departureTime
+            flight.no_of_seats = noOfSeats
+            flight.arrival_time = arrivalTime
+            flight.price = float(price)
+            flight.status = validate_status(status)
+            flight.departure_location = departureLocation
+            flight.arrival_location = arrivalLocation
+            flight.save()
+
+            response = flight.serialize_items()
+
+            response['status'] = response['status'].value
+            response['departureDate'] = response['departureDate'].strftime('%Y-%m-%d')
+            response['departureTime'] = response['departureTime'].strftime('%H:%M')
+            response['arrivalTime'] = response['arrivalTime'].strftime('%H:%M')
+            return success_response(response, 200)
+        else:
+            return error_response('This Flight does not exist', 404)
