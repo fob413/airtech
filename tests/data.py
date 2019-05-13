@@ -95,6 +95,10 @@ user_data = [
     {
         "email": "admintestuser2@email.com",
         "password": "asdf;lkj"
+    },
+    {
+        "email": "admintestuser4@email.com",
+        "password": "asdf;lkj"
     }
 ]
 
@@ -117,6 +121,11 @@ new_airline2 = Airline(
     name_abb="AP"
 )
 
+new_airline3 = Airline(
+    name= "Arik Air",
+    name_abb="AA"
+)
+
 admin_user2 = User(
     firstname= 'admintestuser2',
     lastname='admintestuser2',
@@ -131,6 +140,15 @@ admin_user3 = User(
     lastname='admintestuser3',
     tel='12345678900',
     email='admintestuser3@email.com',
+    password=generate_hash('asdf;lkj'),
+    is_admin=True
+)
+
+admin_user4 = User(
+    firstname= 'admintestuser4',
+    lastname='admintestuser4',
+    tel='12345678900',
+    email='admintestuser4@email.com',
     password=generate_hash('asdf;lkj'),
     is_admin=True
 )
@@ -169,5 +187,119 @@ airline = [
     {
         "name": "Delta Airways",
         "nameAbb": "AP"
+    }
+]
+
+flight = [
+    {
+        "airlineID": "1",
+        "departureTime": "22:05",
+        "departureDate": "2019-09-09",
+        "noOfSeats": 10,
+        "arrivalTime": "05:30",
+        "price": 600,
+        "status": "active",
+        "departureLocation": "Lagos",
+        "arrivalLocation": "Los Angeles"
+    },
+    {
+        "departureTime": "22:05",
+        "departureDate": "2019-09-09",
+        "noOfSeats": 10,
+        "arrivalTime": "05:30",
+        "price": 600,
+        "status": "active",
+        "departureLocation": "Lagos",
+        "arrivalLocation": "Los Angeles"
+    },
+    {
+        "airlineID": "1",
+        "departureDate": "2019-09-09",
+        "noOfSeats": 10,
+        "arrivalTime": "05:30",
+        "price": 600,
+        "status": "active",
+        "departureLocation": "Lagos",
+        "arrivalLocation": "Los Angeles"
+    },
+    {
+        "airlineID": "1",
+        "departureTime": "22:05",
+        "noOfSeats": 10,
+        "arrivalTime": "05:30",
+        "price": 600,
+        "status": "active",
+        "departureLocation": "Lagos",
+        "arrivalLocation": "Los Angeles"
+    },
+    {
+        "airlineID": "1",
+        "departureTime": "22:05",
+        "departureDate": "2019-09-09",
+        "arrivalTime": "05:30",
+        "price": 600,
+        "status": "active",
+        "departureLocation": "Lagos",
+        "arrivalLocation": "Los Angeles"
+    },
+    {
+        "airlineID": "1",
+        "departureTime": "22:05",
+        "departureDate": "2019-09-09",
+        "noOfSeats": 10,
+        "price": 600,
+        "status": "active",
+        "departureLocation": "Lagos",
+        "arrivalLocation": "Los Angeles"
+    },
+    {
+        "airlineID": "1",
+        "departureTime": "22:05",
+        "departureDate": "2019-09-09",
+        "noOfSeats": 10,
+        "arrivalTime": "05:30",
+        "status": "active",
+        "departureLocation": "Lagos",
+        "arrivalLocation": "Los Angeles"
+    },
+    {
+        "airlineID": "1",
+        "departureTime": "22:05",
+        "departureDate": "2019-09-09",
+        "noOfSeats": 10,
+        "arrivalTime": "05:30",
+        "price": 600,
+        "departureLocation": "Lagos",
+        "arrivalLocation": "Los Angeles"
+    },
+    {
+        "airlineID": "1",
+        "departureTime": "22:05",
+        "departureDate": "2019-09-09",
+        "noOfSeats": 10,
+        "arrivalTime": "05:30",
+        "price": 600,
+        "departureLocation": "Lagos",
+        "arrivalLocation": "Los Angeles"
+    },
+    {
+        "airlineID": "1",
+        "departureTime": "22:05",
+        "departureDate": "2019-09-09",
+        "noOfSeats": 10,
+        "arrivalTime": "05:30",
+        "price": 600,
+        "status": "active",
+        "arrivalLocation": "Los Angeles"
+    },
+    {
+        "airlineID": "1",
+        "departureTime": "22:05",
+        "departureDate": "2019-09-09",
+        "noOfSeats": 10,
+        "arrivalTime": "05:30",
+        "price": 600,
+        "status": "active",
+        "departureLocation": "Lagos",
     }
 ]

@@ -1,6 +1,8 @@
 import os
 import datetime
 import jwt
+import time
+import uuid
 
 from flask import jsonify
 from flask_bcrypt import Bcrypt
@@ -90,3 +92,39 @@ def serialize_list(item_lists):
         result.append(item.serialize())
 
     return result
+
+def is_time_valid(time_input):
+    try:
+        time.strptime(time_input, '%H:%M')
+        return True
+    except ValueError:
+        return False
+
+def is_date_valid(date_input):
+    try:
+        datetime.datetime.strptime(date_input, '%Y-%m-%d')
+        return True
+    except ValueError:
+        return False
+
+def generate_flight_code():
+    return uuid.uuid4().hex[:10].upper()
+
+def generate_seat_numbers(no_of_seats):
+    seat_letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G']
+    seat_index = 0
+    seat_list = []
+  
+    for num in range(no_of_seats):
+        seat_list.append(seat_letters[seat_index] + str(num + 1))
+
+        if seat_index is (len(seat_letters) - 1): seat_index = 0
+        else: seat_index += 1
+
+    return seat_list
+
+def validate_status(status):
+    possible_status = ['ACTIVE', 'CANCELLED', 'UNKNOWN']
+
+    if status.upper() in possible_status: return status.lower()
+    else: return 'unknown'

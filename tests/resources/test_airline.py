@@ -18,7 +18,6 @@ class AirlineTestCase(unittest.TestCase):
         self.app_context.push()
         db.create_all()
         self.client = self.app.test_client
-        self.existing_airline_id = ''
 
         db.session.add(admin_user)
         db.session.add(new_airline1)
