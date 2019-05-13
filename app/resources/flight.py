@@ -80,6 +80,20 @@ class FlightResource(Resource):
 
 class Single_FlightResource(Resource):
 
+    def get(self, flight_id):
+        flight = Flight.query.filter_by(id=flight_id).first()
+
+        if flight:
+            response = flight.serialize_items()
+
+            response['status'] = response['status'].value
+            response['departureDate'] = response['departureDate'].strftime('%Y-%m-%d')
+            response['departureTime'] = response['departureTime'].strftime('%H:%M')
+            response['arrivalTime'] = response['arrivalTime'].strftime('%H:%M')
+            return success_response(response, 200)
+        else:
+            return error_response('This flight does not exist', 404)
+
     @Validator.validate_admin_token()
     @Validator.validate([
         'airlineID|required:str',
