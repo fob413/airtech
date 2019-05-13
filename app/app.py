@@ -7,7 +7,7 @@ from app.utils.db import db
 from app.resources.authentication import Signup, Signin
 from app.resources.profile import Profile
 from app.resources.airline import Airlines, Single_Airline
-from app.resources.flight import FlightResource
+from app.resources.flight import FlightResource, Single_FlightResource
 
 
 def create_app(env_name):
@@ -48,5 +48,8 @@ def create_app(env_name):
 
     # admin access to flight
     api.add_resource(FlightResource, '/api/v1/flight')
+
+    #admin access to single flight
+    api.add_resource(Single_FlightResource, '/api/v1/flight/<string:flight_id>')
 
     return app
