@@ -7,7 +7,7 @@ from validate_email import validate_email
 
 from app.models.user import User
 from app.models.airline import Airline
-from app.utils.tools import error_response
+from app.utils.tools import error_response, is_time_valid, is_date_valid
 
 
 class Validator:
@@ -50,7 +50,16 @@ class Validator:
                                 return error_response('{} must be a valid string'.format(request_key), 400)
 
                             if validator == 'int' and type(payload[request_key]) is str and not payload[request_key].isdigit():
-                                return error_response('Invalid {}'.format(request_key), 400)
+                                return error_response('{} must be a valid integer'.format(request_key), 400)
+
+                            if validator == 'float' and type(payload[request_key]) is str and not isinstance(payload[request_key], float):
+                                return error_response('{} must be a valid float'.format(request_key), 400)
+
+                            if validator == 'time' and type(payload[request_key]) is str and not is_time_valid(payload[request_key]):
+                                return error_response('{} must be a valid time format of %H:%M'.format(request_key), 400)
+
+                            if validator == 'date' and type(payload[request_key]) is str and not is_date_valid(payload[request_key]):
+                                return error_response('{} must be a valid date format of %Y-%m-%d'.format(request_key), 400)
 
                             if (request_key == 'email'):
                                 is_valid_email = validate_email(payload[request_key])
@@ -102,6 +111,26 @@ class Validator:
                 if airline_name_abb:
                     return error_response('An airline already exist with the name abbreviation', 400)
 
+                return f(*args, **kwargs)
+            return decorated
+        return airline_exist
+
+    @staticmethod
+    def validate_airline_exists():
+        """
+        Validate airline exists
+        """
+        def airline_exist(f):
+
+            @wraps(f)
+            def decorated(*args, **kwargs):
+                payload = request.get_json()
+
+                airline = Airline.query.filter_by(id=payload['airlineID']).first()
+
+                if not airline:
+                    return error_response('This airline does not exist', 404)
+                
                 return f(*args, **kwargs)
             return decorated
         return airline_exist
