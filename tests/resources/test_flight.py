@@ -257,5 +257,41 @@ class FlightTestCase(unittest.TestCase):
         response = json.loads(res.data)
         self.assertTrue(response['error'])
 
+    def test_successful_get_flight(self):
+        """Test API can successfully get a flight"""
+
+        res1 = self.client().post('/api/v1/auth/signin', data=json.dumps(user_data[16]), content_type="application/json")
+        res1 = json.loads(res1.data)
+        token = res1['data'][0]['token']
+
+        res = self.client().get(
+            '/api/v1/flight/1',
+            headers={
+                'content-type': 'application/json',
+                'auth_token': token
+            }
+        )
+        self.assertEqual(res.status_code, 200)
+        response = json.loads(res.data)
+        self.assertTrue(response['data'][0]['departureLocation'], flight[11]['departureLocation'])
+
+    def test_get_nonexistent_flight(self):
+        """Test API cannot get a flight that does not exist"""
+
+        res1 = self.client().post('/api/v1/auth/signin', data=json.dumps(user_data[16]), content_type="application/json")
+        res1 = json.loads(res1.data)
+        token = res1['data'][0]['token']
+
+        res = self.client().get(
+            '/api/v1/flight/100',
+            headers={
+                'content-type': 'application/json',
+                'auth_token': token
+            }
+        )
+        self.assertEqual(res.status_code, 404)
+        response = json.loads(res.data)
+        self.assertTrue(response['error'])
+
 if __name__ == "__main__":
     unittest.main()
