@@ -10,8 +10,10 @@ from app.utils.tools import (
     error_response,
     generate_flight_code,
     validate_status,
-    generate_seat_numbers
+    generate_seat_numbers,
+    serialize_list
 )
+from app.utils.flights import get_all_flights
 
 
 def create_flight_seat(flight_id, no_of_seats):
@@ -30,6 +32,41 @@ def create_flight_seat(flight_id, no_of_seats):
 
 
 class FlightResource(Resource):
+
+    def get(self):
+        args = request.args
+
+        if args.get('page'):
+            try:
+                page = int(args.get('page'))
+            except:
+                page = 0
+        else:
+            page = 0
+
+        if args.get('limit'):
+            try:
+                per_page = int(args.get('limit'))
+            except:
+                per_page = 5
+        else:
+            per_page = 5
+
+        if args.get('location'):
+            location = args.get('location')
+            return error_response(location, 200)
+        else:
+            flights = Flight.query.paginate(page, per_page, False)
+
+            response = {
+                'currentPage': flights.page,
+                'pages': flights.pages,
+                'pageSize': flights.per_page,
+                'count': flights.total,
+                'data': get_all_flights(flights.items)
+            }
+            return success_response(response, 200)
+            
 
     @Validator.validate_admin_token()
     @Validator.validate([
