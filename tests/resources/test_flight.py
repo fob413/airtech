@@ -293,5 +293,16 @@ class FlightTestCase(unittest.TestCase):
         response = json.loads(res.data)
         self.assertTrue(response['error'])
 
+    def test_get_all_flights(self):
+        """Test API can successfully get all flights"""
+
+        res = self.client().get(
+            '/api/v1/flight',
+            headers={
+                'content-type': 'application/json'
+            }
+        )
+        self.assertEqual(res.status_code, 200)
+
 if __name__ == "__main__":
     unittest.main()
