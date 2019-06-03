@@ -1,6 +1,8 @@
 from flask import request, g, jsonify
 from flask_restful import Resource, Api
 from threading import Thread
+from sqlalchemy import and_
+from datetime import date
 
 from app.models.flight import MyEnum, Flight
 from app.models.flight_seats import Flight_Seats
@@ -175,3 +177,43 @@ class Single_FlightResource(Resource):
             return success_response(response, 200)
         else:
             return error_response('This Flight does not exist', 404)
+
+
+class Flight_By_Location(Resource):
+
+    def get(self, to_location, from_location):
+        args = request.args
+
+        if args.get('page'):
+            try:
+                page = int(args.get('page'))
+            except:
+                page = 0
+        else:
+            page = 0
+
+        if args.get('limit'):
+            try:
+                per_page = int(args.get('limit'))
+            except:
+                per_page = 5
+        else:
+            per_page = 5
+
+        flights = Flight.query.filter(
+            and_(
+                Flight.departure_location.like('%' + from_location + '%'),
+                Flight.arrival_location.like('%' + to_location + '%'),
+                Flight.departure_date>=date.today()
+            )
+            ).order_by(Flight.departure_date.asc()).paginate(page, per_page, False)
+
+        response = {
+            'currentPage': flights.page,
+            'pages': flights.pages,
+            'pageSize': flights.per_page,
+            'count': flights.total,
+            'data': get_all_flights(flights.items)
+        }
+
+        return success_response(response, 200)

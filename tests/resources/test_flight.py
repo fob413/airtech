@@ -304,5 +304,16 @@ class FlightTestCase(unittest.TestCase):
         )
         self.assertEqual(res.status_code, 200)
 
+    def test_get_flights_by_location(self):
+        """Test API can successfully get flights by from_location and to_location"""
+
+        res = self.client().get(
+            '/api/v1/flight/location/Lagos/Los',
+            headers={
+                'content-type': 'application/json'
+            }
+        )
+        self.assertEqual(res.status_code, 200)
+
 if __name__ == "__main__":
     unittest.main()
