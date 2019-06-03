@@ -7,7 +7,7 @@ def get_all_flights(items):
             'arrivalLocation': flight.arrival_location,
             'arrivalTime': flight.arrival_time.strftime('%H:%M'),
             'createdAt': flight.created_at.strftime('%Y-%m-%d'),
-            'departureDate': flight.departure_time.strftime('%Y-%m-%d'),
+            'departureDate': flight.departure_date.strftime('%Y-%m-%d'),
             'departureLocation': flight.departure_location,
             'departureTime': flight.departure_time.strftime('%H:%M'),
             'flightCode': flight.flight_code,
@@ -19,6 +19,5 @@ def get_all_flights(items):
             'updatedAt': flight.updated_at.strftime('%Y-%m-%d')
         }
         flights.append(item)
-
 
     return flights
