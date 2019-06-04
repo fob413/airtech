@@ -8,6 +8,7 @@ from app.resources.authentication import Signup, Signin
 from app.resources.profile import Profile
 from app.resources.airline import Airlines, Single_Airline
 from app.resources.flight import FlightResource, Single_FlightResource, Flight_By_Location
+from app.resources.flight_seat import FlightSeat
 
 
 def create_app(env_name):
@@ -54,5 +55,8 @@ def create_app(env_name):
 
     # user get flights by location
     api.add_resource(Flight_By_Location, '/api/v1/flight/location/<string:from_location>/<string:to_location>')
+
+    # user get available flight seats
+    api.add_resource(FlightSeat, '/api/v1/flight/<string:flight_code>/seats')
 
     return app

@@ -19,7 +19,7 @@ class Flight(BaseModel):
     arrival_time = db.Column(db.Time, nullable=False)
     departure_location = db.Column(db.String(50), nullable=False)
     arrival_location = db.Column(db.String(50), nullable=False)
-    flight_code = db.Column(db.String(10), nullable=False)
+    flight_code = db.Column(db.String(10), nullable=False, unique=True)
     no_of_seats = db.Column(db.Integer, nullable=False)
     price = db.Column(db.Float, nullable=False)
     status = db.Column('status', db.Enum(MyEnum), nullable=False, default=MyEnum.unknown)
