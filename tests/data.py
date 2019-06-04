@@ -102,6 +102,34 @@ user_data = [
     }
 ]
 
+user = [
+    User(
+        firstname='testuserfirstname',
+        lastname='testuserlastname',
+        tel='12345678900',
+        email='testuser@email.com',
+        password=generate_hash('password')
+    )
+]
+
+admin = [
+    User(
+        firstname= 'admintestuser4',
+        lastname='admintestuser4',
+        tel='12345678900',
+        email='admintestuser4@email.com',
+        password=generate_hash('asdf;lkj'),
+        is_admin=True
+    )
+]
+
+airlines = [
+    Airline(
+        name= "Arik Air",
+        name_abb="AA"
+    )
+]
+
 admin_user = User(
     firstname= 'admintestuser',
     lastname='admintestuser',

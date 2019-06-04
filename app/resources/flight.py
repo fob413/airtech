@@ -26,7 +26,7 @@ def create_flight_seat(flight_id, no_of_seats):
 
         for seat_id in seats:
             new_seat = Flight_Seats(
-                flight_id = flight_id,
+                flight_code = flight_id,
                 seat = seat_id,
                 is_available = True
             )
@@ -108,7 +108,7 @@ class FlightResource(Resource):
         response = new_flight.serialize_items()
 
         # create flight seats
-        Thread(target=create_flight_seat, args=(response['id'], new_flight.no_of_seats)).start()
+        Thread(target=create_flight_seat, args=(response['flightCode'], new_flight.no_of_seats)).start()
 
         response['status'] = response['status'].value
         response['departureDate'] = response['departureDate'].strftime('%Y-%m-%d')

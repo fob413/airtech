@@ -163,7 +163,7 @@ class Validator:
                     return error_response('Authorization failed. Expired token.', 401)
                 except jwt.DecodeError as error:
                     if str(error) == 'Signature verification failed':
-                        return error_response('An error occured while decoding', 500)
+                        return error_response('Authorization failed. Invalid token', 401)
                     else:
                         return error_response('Token provided is invalid', 401)
 

@@ -5,7 +5,7 @@ from app.utils.db import db
 class Flight_Seats(BaseModel):
     __tablename__ = "flight_seats"
 
-    flight_id = db.Column(db.Integer, db.ForeignKey('flight.id'), nullable=False)
+    flight_code = db.Column(db.String, db.ForeignKey('flight.flight_code'), nullable=False)
     seat = db.Column(db.String(3), nullable=False)
     is_available = db.Column(db.Boolean, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
