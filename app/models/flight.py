@@ -24,6 +24,8 @@ class Flight(BaseModel):
     price = db.Column(db.Float, nullable=False)
     status = db.Column('status', db.Enum(MyEnum), nullable=False, default=MyEnum.unknown)
     seats = db.relationship('Flight_Seats', backref='flight', lazy=True)
+    flight_tickets = db.relationship('Ticket', backref='flight', lazy=True, foreign_keys='Ticket.flight_id')
+    return_flight_tickets = db.relationship('Ticket', backref='return_flight', lazy=True, foreign_keys='Ticket.return_flight_id')
 
     def serialize_items(self):
         """it triggers serialize method from sql_alchemy_bookmark_object."""
