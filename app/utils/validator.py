@@ -5,8 +5,7 @@ from flask import request, make_response, jsonify, g
 from functools import wraps
 from validate_email import validate_email
 
-from app.models.user import User
-from app.models.airline import Airline
+from app.models import Flight, Flight_Seats, Airline, User
 from app.utils.tools import error_response, is_time_valid, is_date_valid
 
 
@@ -134,6 +133,46 @@ class Validator:
                 return f(*args, **kwargs)
             return decorated
         return airline_exist
+
+    @staticmethod
+    def validate_flight_exists():
+        """
+        Validate flight exists
+        """
+        def flight_exist(f):
+
+            @wraps(f)
+            def decorated(*args, **kwargs):
+                payload = request.get_json()
+
+                airline = Flight.query.filter_by(id=payload['flightID']).first()
+
+                if not airline:
+                    return error_response('This flight does not exist', 404)
+                
+                return f(*args, **kwargs)
+            return decorated
+        return flight_exist
+
+    @staticmethod
+    def validate_flight_seat_exists():
+        """
+        Validate flight seat exists
+        """
+        def flight_seat_exist(f):
+
+            @wraps(f)
+            def decorated(*args, **kwargs):
+                payload = request.get_json()
+
+                airline = Flight_Seats.query.filter_by(id=payload['flightSeatID'], is_available=True).first()
+
+                if not airline:
+                    return error_response('This flight seat does not exist', 404)
+                
+                return f(*args, **kwargs)
+            return decorated
+        return flight_seat_exist
 
     @staticmethod
     def validate_token():

@@ -128,3 +128,9 @@ def validate_status(status):
 
     if status.upper() in possible_status: return status.lower()
     else: return 'unknown'
+
+def validate_flight_type(status):
+    possible_status = ['ONE_WAY', 'ROUND_TRIP']
+
+    if status.upper() in possible_status: return status.lower()
+    else: return 'one_way'
