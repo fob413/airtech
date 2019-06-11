@@ -129,6 +129,8 @@ class Validator:
 
                 if not airline:
                     return error_response('This airline does not exist', 404)
+
+                g.airline = airline
                 
                 return f(*args, **kwargs)
             return decorated
@@ -145,10 +147,12 @@ class Validator:
             def decorated(*args, **kwargs):
                 payload = request.get_json()
 
-                airline = Flight.query.filter_by(id=payload['flightID']).first()
+                flight = Flight.query.filter_by(id=payload['flightID']).first()
 
-                if not airline:
+                if not flight:
                     return error_response('This flight does not exist', 404)
+
+                g.flight = flight
                 
                 return f(*args, **kwargs)
             return decorated
@@ -165,10 +169,12 @@ class Validator:
             def decorated(*args, **kwargs):
                 payload = request.get_json()
 
-                airline = Flight_Seats.query.filter_by(id=payload['flightSeatID'], is_available=True).first()
+                flight_seat = Flight_Seats.query.filter_by(id=payload['flightSeatID'], is_available=True).first()
 
-                if not airline:
+                if not flight_seat:
                     return error_response('This flight seat does not exist', 404)
+
+                g.flight_seat = flight_seat
                 
                 return f(*args, **kwargs)
             return decorated

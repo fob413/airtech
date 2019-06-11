@@ -18,6 +18,7 @@ class Ticket(BaseModel):
     flight_seat_id = db.Column(db.Integer, db.ForeignKey('flight_seats.id'), nullable=False)
     return_flight_id = db.Column(db.Integer, db.ForeignKey('flight.id'), nullable=True)
     return_flight_seat_id = db.Column(db.Integer, db.ForeignKey('flight_seats.id'), nullable=True)
+    ticket_code = db.Column(db.String(7), nullable=False)
 
     def serialize_items(self):
         """it triggers serialize method from sql_alchemy_bookmark_object."""
