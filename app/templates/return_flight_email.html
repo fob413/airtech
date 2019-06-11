@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      .container {
+        background: #efefef;
+        padding: 25px;
+        border: solid black 2px;
+        border-radius: 5%;
+      }
+      .header table {
+        background: #96c8a2;
+        color: #fff;
+        display: table;
+        border-color: #225be2;
+        width: 100%;
+      }
+      th {
+        width: 300px;
+        font-weight: bold;
+        display: table-cell;
+        padding: 20px;
+      }
+      th img {
+        float: right;
+        height: 50px;
+        width: 50px;
+      }
+      h3 {
+        color: #fff;
+        font-weight: 100;
+        text-align: left;
+        font-size: 24px;
+      }
+      .body, .footer {
+        padding: 20px;
+      }
+      
+      .body-table, th, td {
+        width: 100%;
+        border: 1px solid black;
+        border-collapse: collapse;
+        padding: 20px;
+      }
+      
+      .body-column {
+        width: 30%;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <table>
+          <tr>
+            <th>
+              <h4>Ticket Information</h4>
+            </th>
+          </tr>
+        </table>
+      </div>
+      <div class="body">
+          <table class="body-table">
+            <tr>
+              <td class="body-column">
+                <div>
+                  <p>First Name: <span>{{user.firstname}}</span></p>
+                  <p>Last Name: <span>{{user.lastname}}</span></p>
+                </div>
+              </td>
+              <td class="body-column">
+                <div>
+                  <p>Flight No: <span>{{flight.flight_code}}</span></p>
+                  <p>From: <span>{{flight.departure_location}}</span></p>
+                  <p>To: <span>{{flight.arrival_location}}</span></p>
+                  <p>Departure Date: <span>{{flight.departure_date}}</span></p>
+                  <p>Flight Seat: <span>{{flight_seat.seat}}</span></p>
+                  <p>Ticket Code: <span>{{ticket.ticket_code}}</span></p>
+  
+                </div>
+              </td>
+
+              <td class="body-column">
+                <div>
+                  <p>Return Flight No: <span>{{return_flight.flight_code}}</span></p>
+                  <p>From: <span>{{return_flight.departure_location}}</span></p>
+                  <p>To: <span>{{return_flight.arrival_location}}</span></p>
+                  <p>Departure Date: <span>{{return_flight.departure_date}}</span></p>
+                  <p>Flight Seat: <span>{{return_flight_seat.seat}}</span></p>
+                  <p>Ticket Code: <span>{{ticket.ticket_code}}</span></p>
+  
+                </div>
+              </td>
+
+            </tr>
+          </table>
+
+          <div>
+            <p>Warm Regards,</p>
+            <p>Airtech</p>
+          </div>
+      </div>
+    </div>
+  </body>
+</html>

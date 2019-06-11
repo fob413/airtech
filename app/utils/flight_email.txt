@@ -1,0 +1,15 @@
+Flight Information
+                
+First Name: {{user.firstname}}
+Last Name: {{user.lastname}}
+Flight No: {{flight.flight_code}}
+From: {{flight.departure_location}}
+To: {{flight.arrival_location}}
+Departure Date: {{flight.departure_date}}
+Flight Seat: {{flight_seat.seat}}
+Ticket Number: {{ticket.ticket_code}}
+
+
+Regards,
+
+Airtech

@@ -1,14 +1,16 @@
 from flask import request, g, jsonify
 from flask_restful import Resource, Api
 from threading import Thread
-from app.models import Ticket, Flight_Seats, Flight
+from app.models import Ticket, Flight_Seats, Flight, User
 
 from app.utils.validator import Validator
 from app.utils.tools import (
     success_response,
     error_response,
-    validate_flight_type
+    validate_flight_type,
+    generate_ticket_code
 )
+from app.utils.email import send_email, send_return_trip_email
 
 
 def update_flight_seats(flight_type, seat_id, user_id, return_seat_id=None):
@@ -82,7 +84,8 @@ class TicketResource(Resource):
                 flight_id = flightID,
                 flight_seat_id = flightSeatID,
                 return_flight_id = returnFlightID,
-                return_flight_seat_id = returnFlightSeatID
+                return_flight_seat_id = returnFlightSeatID,
+                ticket_code = generate_ticket_code()
             )
             ticket.save()
 
@@ -90,6 +93,11 @@ class TicketResource(Resource):
 
             # update flight_seats
             Thread(target=update_flight_seats, args=(response['flightType'], response['flightSeatId'], response['userId'], response['returnFlightSeatId'])).start()
+
+            # send confirmation email
+            user = User.query.filter_by(id=g.user_id).first()
+
+            send_return_trip_email('Reserved Flight Ticket', 'airtech@email.com', user.email, g.flight, g.flight_seat, user, ticket, return_flight, return_flight_seat)
 
             response['flightType'] = response['flightType'].value
             return success_response(response, 201)
@@ -99,7 +107,8 @@ class TicketResource(Resource):
                 flight_type = flightType,
                 user_id = g.user_id,
                 flight_id = flightID,
-                flight_seat_id = flightSeatID
+                flight_seat_id = flightSeatID,
+                ticket_code = generate_ticket_code()
             )
             ticket.save()
 
@@ -107,6 +116,11 @@ class TicketResource(Resource):
 
             # update flight_seats
             Thread(target=update_flight_seats, args=(response['flightType'], response['flightSeatId'], response['userId'], 5)).start()
+
+            # send confirmation email
+            user = User.query.filter_by(id=g.user_id).first()
+
+            send_email('Reserved Flight Ticket', 'airtech@email.com', user.email, g.flight, g.flight_seat, user, ticket)
 
             response['flightType'] = response['flightType'].value
             return success_response(response, 201)

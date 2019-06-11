@@ -110,6 +110,9 @@ def is_date_valid(date_input):
 def generate_flight_code():
     return uuid.uuid4().hex[:10].upper()
 
+def generate_ticket_code():
+    return uuid.uuid4().hex[:7].upper()
+
 def generate_seat_numbers(no_of_seats):
     seat_letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G']
     seat_index = 0
