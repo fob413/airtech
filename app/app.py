@@ -10,6 +10,7 @@ from app.resources.airline import Airlines, Single_Airline
 from app.resources.flight import FlightResource, Single_FlightResource, Flight_By_Location
 from app.resources.flight_seat import FlightSeat
 from app.resources.ticket import TicketResource
+from app.resources.booked import BookedResource
 
 
 def create_app(env_name):
@@ -62,5 +63,8 @@ def create_app(env_name):
 
     # user booking resource
     api.add_resource(TicketResource, '/api/v1/ticket')
+
+    # admin booked flight users
+    api.add_resource(BookedResource, '/api/v1/flight/<string:flight_id>/booked')
 
     return app

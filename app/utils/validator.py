@@ -147,7 +147,10 @@ class Validator:
             def decorated(*args, **kwargs):
                 payload = request.get_json()
 
-                flight = Flight.query.filter_by(id=payload['flightID']).first()
+                try:
+                    flight = Flight.query.filter_by(id=payload['flightID']).first()
+                except:
+                    flight = Flight.query.filter_by(id=request.view_args['flight_id']).first()
 
                 if not flight:
                     return error_response('This flight does not exist', 404)
