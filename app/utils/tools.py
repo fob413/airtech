@@ -93,6 +93,19 @@ def serialize_list(item_lists):
 
     return result
 
+def serialize_ticket_list(ticket_list):
+    result = []
+
+    for item in ticket_list:
+        ticket = item.serialize()
+        ticket['flightType'] = ticket['flightType'].value
+        ticket['user'] = {
+            'email': item.user.serialize()['email']
+        }
+        result.append(ticket)
+
+    return result
+
 def is_time_valid(time_input):
     try:
         time.strptime(time_input, '%H:%M')

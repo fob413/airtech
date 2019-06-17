@@ -12,6 +12,7 @@ class User(BaseModel):
     password = db.Column(db.String(200), nullable=False)
     is_admin = db.Column(db.Boolean, default=False)
     profile = db.Column(db.String(500), nullable=True)
+    tickets = db.relationship('Ticket', backref='user', lazy=True)
 
     def __repr__(self):
         return '<User {}>'.format(self.firstname)
