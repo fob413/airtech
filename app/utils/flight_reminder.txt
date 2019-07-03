@@ -1,0 +1,17 @@
+Flight Reminder
+
+Please be reminded of your flight tomorrow. Below is your ticket information for your flight.
+
+First Name: {{user.firstname}}
+Last Name: {{user.lastname}}
+Flight No: {{flight.flight_code}}
+From: {{flight.departure_location}}
+To: {{flight.arrival_location}}
+Departure Date: {{flight.departure_date}}
+Flight Seat: {{flight_seat.seat}}
+Ticket Number: {{ticket.ticket_code}}
+
+
+Have a safe flight and warm regards
+
+Airtech

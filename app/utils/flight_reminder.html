@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      .container {
+        background: #efefef;
+        padding: 25px;
+        border: solid black 2px;
+        border-radius: 5%;
+      }
+      .header table {
+        background: #96c8a2;
+        color: #fff;
+        display: table;
+        border-color: #225be2;
+        width: 100%;
+      }
+      th {
+        width: 300px;
+        font-weight: bold;
+        display: table-cell;
+        padding: 20px;
+      }
+      th img {
+        float: right;
+        height: 50px;
+        width: 50px;
+      }
+      h3 {
+        color: #fff;
+        font-weight: 100;
+        text-align: left;
+        font-size: 24px;
+      }
+      .body, .footer {
+        padding: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <table>
+          <tr>
+            <th>
+              <h4>Flight Reminder</h4>
+            </th>
+          </tr>
+        </table>
+      </div>
+      <div class="body">
+        <div>
+          <p><strong>Please be reminded of your flight tomorrow. Below is your ticket information for your flight.</strong></p>
+        </div>
+          <div>
+            <p>First Name: <span>{{user.first_name}}</span></p>
+            <p>Last Name: <span>{{user.last_name}}</span></p>
+            <p>Flight No: <span>{{flight.flight_code}}</span></p>
+            <p>From: <span>{{flight.from_location}}</span></p>
+            <p>To: <span>{{flight.to_location}}</span></p>
+            <p>Departure Date: <span>{{flight.departure_date}}</span></p>
+            <p>Flight Seat: <span>{{flight_seat}}</span></p>
+            <p>Ticket Code: <span>{{ticket.ticket_code}}</span></p>
+            
+          </div>
+          <div>
+            <p><strong>Have a safe flight and warm regards<br>Airtech</strong></p>
+          </div>
+      </div>
+    </div>
+  </body>
+</html>

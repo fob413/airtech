@@ -29,3 +29,11 @@ def send_return_trip_email(subject, sender, recipients, flight, flight_seat, use
     msg.body = render_template('return_flight_email.txt', flight=flight, flight_seat=flight_seat, user=user, ticket=ticket, return_flight=return_flight, return_flight_seat=return_flight_seat)
 
     Thread(target=send_async_email, args=(app, msg)).start()
+
+def send_flight_reminder_email(subject, sender, recipients, flight, flight_seat, user, ticket):
+    msg = Message(subject, sender=sender, recipients=[recipients])
+
+    msg.html = render_template('flight_email.html', flight=flight, flight_seat=flight_seat, user=user, ticket=ticket)
+    msg.body = render_template('flight_email.txt', flight=flight, flight_seat=flight_seat, user=user, ticket=ticket)
+
+    Thread(target=send_async_email, args=(app, msg)).start()
