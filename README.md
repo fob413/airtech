@@ -20,6 +20,7 @@ Airtech is a flight booking system that allows users of the platform to book fli
 * [Pip](https://pypi.org/project/pip/): Pip is the package installer for python. Pip is used to install packages from the Python Package Index and other indexes. See the [source](https://pypi.org/project/pip/) for installation guide.
 * [Flask](http://flask.pocoo.org/): Flask is a microframework for python. It is focused on simplicity and minimalism, leaving the developer with the freedom of choice in terms of modules and add-ons. See the [source](http://flask.pocoo.org/) for installation guide.
 * [Postgresql](https://www.postgresql.org/): Postgresql is a powerful, open source object-relational database system. Postgresql 10 (or above) is used to build this project. See the [source](https://www.postgresql.org/) for installation guide.
+* [Redis](https://redis.io/): Redis is an open source, in-memory data structure store, used as a database, cache and message broker. See the [source](https://redis.io/) for installation guide.
 
 # Installation
 * Clone this repo and navigate into the project's directory
@@ -50,6 +51,14 @@ Airtech is a flight booking system that allows users of the platform to book fli
 ```python app.py```
 * To run the test
 ```tox```
+
+## Run Background Task
+* Start up `redis-server`
+```redis-server```
+* Run `celery`
+```celery beat -A app.celery --schedule=/tmp/celerybeat-schedule --loglevel=INFO --pidfile=/tmp/celerybeat.pid```
+* Run `celery worker`
+```celery worker -A app.celery --loglevel=INFO```
 
 # Contributing
 Feel free to dive in. Open an issue to request for a bug fix or additional feature or submit PRs. To contribute:
