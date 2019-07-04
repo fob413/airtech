@@ -53,7 +53,7 @@ class Airlines(Resource):
         else:
             per_page = 5
 
-        airlines = Airline.query.paginate(page, per_page, False)
+        airlines = Airline.query.filter_by(is_deleted=False).paginate(page, per_page, False)
 
         response = {
             'currentPage': airlines.page,
@@ -90,8 +90,8 @@ class Single_Airline(Resource):
             payload = request.get_json()
             
             name, nameAbb = payload['name'], payload['nameAbb']
-            nameExists = Airline.query.filter_by(name=name).all()
-            nameAbbExists = Airline.query.filter_by(name_abb=nameAbb).all()
+            nameExists = Airline.query.filter_by(name=name, is_deleted=False).all()
+            nameAbbExists = Airline.query.filter_by(name_abb=nameAbb, is_deleted=False).all()
 
             if duplicate_exists(airline, nameExists):
                 return error_response('An airline already exist with the name', 400)

@@ -58,7 +58,7 @@ class FlightResource(Resource):
             location = args.get('location')
             return error_response(location, 200)
         else:
-            flights = Flight.query.paginate(page, per_page, False)
+            flights = Flight.query.filter_by(is_deleted=False).paginate(page, per_page, False)
 
             response = {
                 'currentPage': flights.page,

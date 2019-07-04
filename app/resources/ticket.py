@@ -68,12 +68,12 @@ class TicketResource(Resource):
                 return error_response('returnFlightID and returnFlightSeatID are requred for a round_trip', 400)
 
             # validate return trip flight exist
-            return_flight = Flight.query.filter_by(id=returnFlightID).first()
+            return_flight = Flight.query.filter_by(id=returnFlightID, is_deleted=False).first()
             if not return_flight:
                 return error_response('The return flight does not exist', 404)
 
             # validate return flight seat exists
-            return_flight_seat = Flight_Seats.query.filter_by(id=returnFlightSeatID, is_available=True, flight_code=return_flight.flight_code).first()
+            return_flight_seat = Flight_Seats.query.filter_by(id=returnFlightSeatID, is_available=True, flight_code=return_flight.flight_code, is_deleted=False).first()
             if not return_flight_seat:
                 return error_response('The return flight seat does not exist', 404)
 
