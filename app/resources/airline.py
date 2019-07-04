@@ -107,3 +107,17 @@ class Single_Airline(Resource):
             return success_response(updated_airline, 200)
         else:
             return error_response('This airline does not exist', 404)
+
+    @Validator.validate_admin_token()
+    def delete(self, airline_id):
+        airline = get_airline(airline_id)
+
+        if airline:
+            airline.is_deleted = True
+            airline.save()
+
+            return success_response({ "message": "Successfully deleted airline" }, 200)
+        else:
+            return error_response('This airline does not exist', 404)
+
+        return error_response('successfullllllll', 200)

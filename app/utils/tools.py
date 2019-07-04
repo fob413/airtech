@@ -71,7 +71,7 @@ def generate_admin_token(user_id):
 
 
 def get_airline(airline_id):
-    airline = Airline.query.filter_by(id=airline_id).first()
+    airline = Airline.query.filter_by(id=airline_id, is_deleted=False).first()
 
     return airline
 
