@@ -155,7 +155,7 @@ class AirlineTestCase(unittest.TestCase):
         token = res1['data'][0]['token']
 
         res = self.client().get(
-            '/api/v1/airline/1',
+            '/api/v1/airline/2',
             headers={
                 'content-type': 'application/json',
                 'auth_token': token
@@ -191,7 +191,7 @@ class AirlineTestCase(unittest.TestCase):
         token = res1['data'][0]['token']
 
         res = self.client().put(
-            '/api/v1/airline/1',
+            '/api/v1/airline/2',
             data=json.dumps(airline[6]),
             headers={
                 'content-type': 'application/json',
@@ -230,7 +230,7 @@ class AirlineTestCase(unittest.TestCase):
         token = res1['data'][0]['token']
 
         res = self.client().put(
-            '/api/v1/airline/1',
+            '/api/v1/airline/2',
             data=json.dumps(airline[1]),
             headers={
                 'content-type': 'application/json',
@@ -248,7 +248,7 @@ class AirlineTestCase(unittest.TestCase):
         token = res1['data'][0]['token']
 
         res = self.client().put(
-            '/api/v1/airline/1',
+            '/api/v1/airline/2',
             data=json.dumps(airline[2]),
             headers={
                 'content-type': 'application/json',
@@ -266,7 +266,7 @@ class AirlineTestCase(unittest.TestCase):
         token = res1['data'][0]['token']
 
         res = self.client().put(
-            '/api/v1/airline/1',
+            '/api/v1/airline/2',
             data=json.dumps(airline[7]),
             headers={
                 'content-type': 'application/json',
@@ -284,7 +284,7 @@ class AirlineTestCase(unittest.TestCase):
         token = res1['data'][0]['token']
 
         res = self.client().put(
-            '/api/v1/airline/1',
+            '/api/v1/airline/2',
             data=json.dumps(airline[8]),
             headers={
                 'content-type': 'application/json',
@@ -315,6 +315,55 @@ class AirlineTestCase(unittest.TestCase):
         self.assertTrue(response['data'][0]['data'])
         self.assertTrue(response['data'][0]['pageSize'])
         self.assertTrue(response['data'][0]['pages'])
+
+    def test_admin_delete_airline(self):
+        """Test API admin can delete an airline"""
+
+        res1 = self.client().post('/api/v1/auth/signin', data=json.dumps(user_data[7]), content_type="application/json")
+        res1 = json.loads(res1.data)
+        token = res1['data'][0]['token']
+
+        res = self.client().post(
+            '/api/v1/airline',
+            data=json.dumps(airline[9]),
+            headers={
+                'content-type': 'application/json',
+                "auth_token": token
+            }
+            )
+        self.assertEqual(res.status_code, 201)
+        response = json.loads(res.data)
+        self.assertTrue(response['data'][0]['name'])
+        self.assertTrue(response['data'][0]['nameAbb'])
+
+        res2 = self.client().delete(
+            '/api/v1/airline/{}'.format(response['data'][0]['id']),
+            headers={
+                'content-type': 'application/json',
+                "auth_token": token
+            }
+            )
+        self.assertEqual(res2.status_code, 200)
+        response2 = json.loads(res2.data)
+        self.assertTrue(response2['data'][0]['message'])
+
+    def test_admin_delete_airline_does_not_exist(self):
+        """Test API admin cannot delete an airline that does not exist"""
+
+        res1 = self.client().post('/api/v1/auth/signin', data=json.dumps(user_data[7]), content_type="application/json")
+        res1 = json.loads(res1.data)
+        token = res1['data'][0]['token']
+
+        res2 = self.client().delete(
+            '/api/v1/airline/404',
+            headers={
+                'content-type': 'application/json',
+                "auth_token": token
+            }
+            )
+        self.assertEqual(res2.status_code, 404)
+        response2 = json.loads(res2.data)
+        self.assertTrue(response2['error'])
 
 
 if __name__ == "__main__":

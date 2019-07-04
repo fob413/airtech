@@ -215,6 +215,10 @@ airline = [
     {
         "name": "Delta Airways",
         "nameAbb": "AP"
+    },
+    {
+        "name": "FunshAir",
+        "nameAbb": "FA"
     }
 ]
 
