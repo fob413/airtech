@@ -33,7 +33,7 @@ class BookedResource(Resource):
         else:
             per_page = 5
 
-        booked_tickets = Ticket.query.filter_by(flight_id=flight_id).paginate(page, per_page, False)
+        booked_tickets = Ticket.query.filter_by(flight_id=flight_id, is_deleted=False).paginate(page, per_page, False)
 
         response = {
             'currentPage': booked_tickets.page,
