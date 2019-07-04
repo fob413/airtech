@@ -120,7 +120,7 @@ class FlightResource(Resource):
 class Single_FlightResource(Resource):
 
     def get(self, flight_id):
-        flight = Flight.query.filter_by(id=flight_id).first()
+        flight = Flight.query.filter_by(id=flight_id, is_deleted=False).first()
 
         if flight:
             response = flight.serialize_items()
@@ -147,7 +147,7 @@ class Single_FlightResource(Resource):
     ])
     @Validator.validate_airline_exists()
     def put(self, flight_id):
-        flight = Flight.query.filter_by(id=flight_id).first()
+        flight = Flight.query.filter_by(id=flight_id, is_deleted=False).first()
 
         if flight:
             payload = request.get_json()
@@ -175,6 +175,18 @@ class Single_FlightResource(Resource):
             response['departureTime'] = response['departureTime'].strftime('%H:%M')
             response['arrivalTime'] = response['arrivalTime'].strftime('%H:%M')
             return success_response(response, 200)
+        else:
+            return error_response('This Flight does not exist', 404)
+
+    @Validator.validate_admin_token()
+    def delete(self, flight_id):
+        flight = Flight.query.filter_by(id=flight_id, is_deleted=False).first()
+
+        if flight:
+            flight.is_deleted = True
+            flight.save()
+
+            return success_response({ 'message': 'Successfully deleted flight' }, 200)
         else:
             return error_response('This Flight does not exist', 404)
 

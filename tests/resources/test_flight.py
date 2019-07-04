@@ -227,7 +227,7 @@ class FlightTestCase(unittest.TestCase):
         token = res1['data'][0]['token']
 
         res = self.client().put(
-            '/api/v1/flight/1',
+            '/api/v1/flight/2',
             data=json.dumps(flight[11]),
             headers={
                 'content-type': 'application/json',
@@ -265,7 +265,7 @@ class FlightTestCase(unittest.TestCase):
         token = res1['data'][0]['token']
 
         res = self.client().get(
-            '/api/v1/flight/1',
+            '/api/v1/flight/2',
             headers={
                 'content-type': 'application/json',
                 'auth_token': token
@@ -314,6 +314,54 @@ class FlightTestCase(unittest.TestCase):
             }
         )
         self.assertEqual(res.status_code, 200)
+
+    def test_delete_flight(self):
+        """Test API successfully creates a flight"""
+
+        res1 = self.client().post('/api/v1/auth/signin', data=json.dumps(user_data[16]), content_type="application/json")
+        res1 = json.loads(res1.data)
+        token = res1['data'][0]['token']
+
+        res = self.client().post(
+            '/api/v1/flight',
+            data=json.dumps(flight[0]),
+            headers={
+                'content-type': 'application/json',
+                'auth-token': token
+            }
+        )
+        self.assertEqual(res.status_code, 201)
+        response = json.loads(res.data)
+        self.assertTrue(response['data'][0]['id'])
+
+        res2 = self.client().delete(
+            '/api/v1/flight/{}'.format(response['data'][0]['id']),
+            headers={
+                'content-type': 'application/json',
+                'auth-token': token
+            }
+        )
+        self.assertEqual(res2.status_code, 200)
+        response1 = json.loads(res2.data)
+        self.assertTrue(response1['data'][0]['message'])
+
+    def test_delete_flight_does_not_exist(self):
+        """Test API successfully creates a flight"""
+
+        res1 = self.client().post('/api/v1/auth/signin', data=json.dumps(user_data[16]), content_type="application/json")
+        res1 = json.loads(res1.data)
+        token = res1['data'][0]['token']
+
+        res2 = self.client().delete(
+            '/api/v1/flight/{}'.format(200),
+            headers={
+                'content-type': 'application/json',
+                'auth-token': token
+            }
+        )
+        self.assertEqual(res2.status_code, 404)
+        response1 = json.loads(res2.data)
+        self.assertTrue(response1['error'])
 
 if __name__ == "__main__":
     unittest.main()
